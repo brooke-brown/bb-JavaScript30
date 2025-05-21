@@ -25,22 +25,22 @@ body,html {
   font-size: 1.5rem;
   padding: 1rem .5rem;
   transition: all .07s ease;
-  width: 10rem;
+  width: 100px;
   text-align: center;
   color: white;
   background: rgba(0,0,0,0.4);
-  text-shadow: 0 0 .5rem black;
+  text-shadow: 0 0 5px black;
 }
 
 .playing {
   transform: scale(1.1);
   border-color: #ffc600;
-  box-shadow: 0 0 1rem #ffc600;
+  box-shadow: 0 0 10px #ffc600;
 }
 
 kbd {
   display: block;
-  font-size: 4rem;
+  font-size: 40px;
 }
 
 .sound {

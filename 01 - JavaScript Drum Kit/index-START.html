@@ -60,6 +60,40 @@
 
 <script>
 
+
+function playSound(e) {
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); // backticks allow template literals
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+  if (!audio) return; // stop the function from running all together for something that doesn't exist
+  // if we call audio.play() on an element already playing, it will not play again, so before that:
+  
+  key.classList.add('playing'); 
+  audio.currentTime = 0.0; // rewinds to the start
+  audio.play();
+  
+  // key.classList.add('playing') adds the class 'playing' to the key that was pressed
+  // mades the key border flash yellow 
+  // could set a timeout, but you would have to update the CSS transition as well
+  // so instead we can use the transitionend event
+}
+
+function removeTransition(e) {
+  if (e.propertyName !== 'transform') return; // skip if it's not a transform
+  this.classList.remove('playing');
+
+}
+
+const keys = document.querySelectorAll('.key'); // this is a NodeList, not an array
+keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+// when transition has ended, remove the class 'playing' from the key
+
+window.addEventListener('keydown', playSound);
+// when a key is pressed, play the sound
+// 'keydown' is the event to listen for, same as like 'click' for mouse events
+// and playSound is the callback function to run when the event occurs
+
+  
+
 </script>
 
 
