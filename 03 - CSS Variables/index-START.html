@@ -6,7 +6,7 @@
   <link rel="icon" href="https://fav.farm/🔥" />
 </head>
 <body>
-  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+  <h2>Update CSS Variables with <span class='hl'>JS</span></h2> <!-- hl = highlight-->
 
   <div class="controls">
     <label for="spacing">Spacing:</label>
@@ -16,13 +16,29 @@
     <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
 
     <label for="base">Base Color</label>
-    <input id="base" type="color" name="base" value="#ffc600">
+    <input id="base" type="color" name="base" value="#28c0b8">
   </div>
 
-  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+  <img src="https://media.istockphoto.com/id/1384422450/photo/freedom-tower-and-lower-manhattan-from-new-jersey.jpg?s=1024x1024&w=is&k=20&c=cRJH94lDqQRcAXxBRoz2tGREKN-8bOfmTRJtAsEQ0vs=">
 
-  <style>
+  <style> /*the way CSS variables is you declare them on some sort of element. we begin on
+    the :root element, which is the top level of the DOM. This means that all elements in the DOM can access these variables */
+      :root {
+        --base:#28c0b8; /* -- the double dash is 'custom property notation' */
+        --spacing: 10px; /* px = pixels */
+        --blur: 10px;
+      }
 
+
+    img {
+      padding: var(--spacing); /* when you want to use a variable, you use the var() function */
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -46,6 +62,25 @@
   </style>
 
   <script>
+
+    const inputs = document.querySelectorAll('.controls input'); 
+    // select all inputs in the controls div
+    // this is a node list, not an array: this affects what methods we can call on it
+    // NodeList includes the ForEach  method, so we'll use that to loop through the inputs
+
+    function handleUpdate() {
+      const suffix = this.dataset.sizing || ''; // if data-sizing is not set, use an empty string';
+      document.documentElement.style.setProperty(`--${this.name}`,this.value + suffix); // this.name is the name of the input (e.g. spacing, blur, base)
+      // document.documentElement is the root element of the document, which is the <html> element
+      // setProperty is a method that allows us to set a CSS variable on the document element
+    }
+
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+
+
+
+
   </script>
 
 </body>
