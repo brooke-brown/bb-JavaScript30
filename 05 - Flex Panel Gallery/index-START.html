@@ -27,6 +27,7 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      display: flex; /* allows flex children to grow */
     }
 
     .panel {
@@ -44,20 +45,35 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      flex: 1; /* lets children evenly distribute space */
+      justify-content: center;
+      align-items: center;
+      display: flex; /*an example of nesting flexbox*/
+      flex-direction: column; /* stacks children vertically */
     }
 
-    .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
-    .panel2 { background-image:url(https://source.unsplash.com/rFKUFzjPYiQ/1500x1500); }
-    .panel3 { background-image:url(https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&w=1500&h=1500&fit=crop&s=967e8a713a4e395260793fc8c802901d); }
-    .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
-    .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
+    .panel1 { background-image:url(https://images.unsplash.com/photo-1671347020855-8f35d210ee9a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8d2Vic2l0ZSUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D); }
+    .panel2 {background-image:url(https://images.unsplash.com/photo-1631631480669-535cc43f2327?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmFja2dyb3VuZCUyMGltYWdlfGVufDB8fDB8fHww)}
+    .panel3 { background-image:url(https://plus.unsplash.com/premium_photo-1673306778968-5aab577a7365?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YmFja2dyb3VuZCUyMGltYWdlfGVufDB8fDB8fHww); }
+    .panel4 { background-image:url(https://images.unsplash.com/photo-1619995745882-f4128ac82ad6?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmFja2dyb3VuZCUyMGltYWdlfGVufDB8fDB8fHww); }
+    .panel5 { background-image:url(https://plus.unsplash.com/premium_photo-1673697240011-76f7f9220300?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YmFja2dyb3VuZCUyMGltYWdlfGVufDB8fDB8fHww); }
 
     /* Flex Children */
     .panel > * {
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      flex: 1 0 auto; /* allows children to grow and shrink */
+      display: flex; /* allows children to grow */
+      justify-content: center;
+      align-items: center;
     }
+
+    .panel > *:first-child { transform: translateY(-100%); }
+    .panel.open-active > *:first-child { transform: translateY(0); }
+    .panel > *:last-child { transform: translateY(100%); }
+    .panel.open-active > *:last-child { transform: translateY(0); }
+
 
     .panel p {
       text-transform: uppercase;
@@ -71,7 +87,14 @@
     }
 
     .panel.open {
+      flex : 5; /* grows to fill space */
       font-size: 40px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      .panel p {
+        font-size: 1em;
+      }
     }
 
   </style>
@@ -106,6 +129,26 @@
   </div>
 
   <script>
+
+    const panels = document.querySelectorAll('.panel');
+
+    function toggleOpen() {
+      console.log('clicked');
+      this.classList.toggle('open');
+    }
+
+    function toggleActive(e) {
+      console.log(e.propertyName); // observe .panel.open : when triggered, flex = 5 and font size = 40px
+      if (e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active');
+    }
+  }
+
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
+
+    // after it has been toggled open, we want the font to move down and up
+    // panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
 
   </script>
 
