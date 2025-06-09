@@ -7,6 +7,23 @@
     <link rel="icon" href="https://fav.farm/🔥" />
   </head>
   <body>
-    <script></script>
+    <script>
+      const pressed = []; // array to keep track of pressed keys
+      const secretCode = 'wesbos'; // secret code to trigger the event
+  
+
+      window.addEventListener('keyup', (e) => {
+        console.log(e.key);
+        pressed.push(e.key); // push method because array
+        // we need to trim or limit our array based on length of our secret code
+        pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length);
+        // start from end of word and remove all keys before the secret code length
+        if(pressed.join('').includes(secretCode)) {
+          console.log('DING DING');
+          cornify_add(); // call the cornify function to add unicorns
+        }
+        console.log(pressed);
+      })
+    </script>
   </body>
 </html>
