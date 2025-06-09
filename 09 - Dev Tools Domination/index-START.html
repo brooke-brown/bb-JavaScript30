@@ -18,29 +18,64 @@
       p.style.fontSize = '50px';
     }
 
-    // Regular
+    //various console methods:
 
-    // Interpolated
+    // !!! Regular
+    console.log('hello');
 
-    // Styled
+    // !!! Interpolated
+    console.log('Hello I am a %s string!', '💩');
 
-    // warning!
+    // !!! Styled
+    console.log('%c I am some great text', 'font-size: 20px; background: #BADA55; text-shadow: 10px 10px 0 blue');
 
-    // Error :|
+    // !!! warning!
+    console.warn('Oh naurrr!'); 
 
-    // Info
+    // !!! Error :|
 
-    // Testing
+    console.error('This is an error!'); //doesn't throw an error, just displays in console
 
-    // clearing
+    // !!! Info
 
-    // Viewing DOM Elements
+    console.info('This is some info!'); 
 
-    // Grouping together
+    // !!! Testing, tests if something is T or F
+    const p = document.querySelector('p');
+    console.assert(1 === 2, 'That is wrong!'); // will only log if the assertion is false
 
-    // counting
+    // !!! Clearing,, just clears the console
 
-    // timing
+    console.clear();
+
+    // !!! Viewing DOM Elements
+
+    console.log(p); // logs the array of dog objects
+    console.dir('p'); // logs the DOM element as an object
+
+    // !!! Grouping together - best when you have multiple logs for the same thing
+
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`); // creates a group in the console
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.log(`${dog.name} is ${dog.age * 7} dog years old`)
+      console.groupEnd(`${dog.name}`);
+    })
+
+    // !!! Counting - counts how many times something has been logged
+
+    console.count('Snickers');
+
+    // !!! Timing - tells you how long something takes to execute
+    console.time('fetching data');
+    fetch('https://api.github.com/users/kevinsawicki')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetching data'); // ends the timer and logs the time taken
+        console.log(data);
+      });
+
+    // there is also console.table() which displays data in a table format, and we have learned
 
   </script>
 </body>
