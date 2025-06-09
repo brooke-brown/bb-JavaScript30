@@ -8,6 +8,52 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  const canvas = document.getElementById('draw'); // you dont' draw on the html, but the context
+  const ctx = canvas.getContext('2d'); // get the context of the canvas
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.strokeStyle = '#BADA55';
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 25;
+  
+  let isDrawing = false; // captures if we're actually drawing aka cursor = down
+  // so when we click down, isDrawing becomes true
+
+  let lastX = 0;
+  let lastY = 0; // you need a starting x, y for the line
+
+  let hue = 0;
+  let direction = true;
+
+  function draw(e) {
+    if (!isDrawing) return; // stop from running when not moused down
+   console.log(e); // this only runs when mouse is down
+   ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; // change the color of the stroke
+   ctx.beginPath();
+   //start from
+   ctx.moveTo(lastX, lastY);
+   //go to
+   ctx.lineTo(e.offsetX, e.offsetY);
+   ctx.stroke(); // lines 29-31 just start the line from the last point, we need to update the lastX and lastY
+   lastX = e.offsetX;
+   lastY = e.offsetY;
+   hue++;
+   if (hue >= 360) {
+    hue = 0;
+   }
+  }
+
+  
+  canvas.addEventListener('mousemove', draw);
+
+  canvas.addEventListener('mousedown', () => {
+    isDrawing = true; 
+  [lastX, lastY] = [event.offsetX, event.offsetY]; 
+  });
+  
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
 </script>
 
 <style>
