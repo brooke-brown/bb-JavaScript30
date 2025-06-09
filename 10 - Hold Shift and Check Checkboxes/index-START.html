@@ -97,6 +97,54 @@
   </div>
 
 <script>
+
+// fun fact: the "checkbox" is a native HTML element, and is 
+// automatically checked or unchecked by the browser, and not by JavaScript
+// other native HTML elements:
+
+// Element	              |         Purpose
+//<input type="text">	    |         Text input
+//<input type="radio">	  |         Radio button
+//<input type="checkbox">	|         Checkbox
+//<button>	              |         Button
+// <select>	              |         Dropdown menu
+//<textarea>	            |         Multi-line text input
+
+
+// firstly, we need to query all the checkboxes for our event listeners
+const checkboxes = document.querySelectorAll('.item input[type="checkbox"]');
+
+let lastChecked; // this will hold the last checked checkbox
+
+// quick declaration review:
+// let == variable that may be reassigned later
+// const == variable that cannot be reassigned later
+
+function handleCheck(e) {
+  console.log(e);
+  let inBetween = false; // boolean to track if we are in between two checkboxes
+  // need to check if shift key is pressed AND that they are checking a checkbox
+  if(e.shiftKey && this.checked) {
+    checkboxes.forEach(checkbox => {
+      console.log(checkbox);
+      if (checkbox === this || checkbox === lastChecked) {
+        inBetween = !inBetween; // would normally say = true, but we want to toggle it
+      }
+
+      if (inBetween) {
+        checkbox.checked = true; // check the checkbox if we are in between
+      } 
+  });
+  }
+  
+  lastChecked = this; // update lastChecked to the current checkbox
+}
+
+checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck));
+
+// more NOTES:
+// DOM = Document Object Model
+// and checkbox.checked is a property of the checkbox element that returns true or false, naturally included
 </script>
 </body>
 </html>
