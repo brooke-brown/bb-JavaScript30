@@ -23,16 +23,73 @@
     <form class="add-items">
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
+      <input type="button" value="Clear All" onclick="clearAll()">
+      <input type="button" value="Select All" onclick="selectAll()">
+      <input type="button" value="Unselect All" onclick="unselectAll()">
     </form>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+
+  function addItem(e) {
+    e.preventDefault(); // prevents default form submission behvaior aka page reload;
+    const text = (this.querySelector('[name=item]')).value; // this refers to the form element that triggered the event
+    const item = {
+      text,
+      done: false
+    };
+    items.push(item); // adds the new item to the items array
+    populateList(items, itemsList); // populates the list with the new item
+    localStorage.setItem('items', JSON.stringify(items)); // so the items are saved in localStorage
+    // parse vs stringify is a common question. stringify converts an object to a string, while parse converts a string to an object.
+    this.reset(); // resets the form after submission
+  }
+
+  function populateList(plates = [], platesList) { // we want this function so it's a bit more resilient
+    platesList.innerHTML = plates.map((plate, i) => { // needs a variable or directly into the HTML
+      return `
+        <li> 
+          <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ?
+          'checked' : ''} />
+          <label for="item${i}">${plate.text}</label>
+        </li>
+      `;
+    }).join(''); // join converts the array to a string
+
+  }
+
+  function toggleDone(e) {
+    if (!e.target.matches('input[type="checkbox"]')) return; // skip if not an input
+    const el = e.target;
+    const index = el.dataset.index;
+    items[index].done = !items[index].done; // toggles the done property
+    localStorage.setItem('items', JSON.stringify(items)); // saves the items to localStorage
+    populateList(items, itemsList); // re-populates the list with the updated items
+  }
+// individual challenge: make button below list to clear all, check all, or uncheck all
+  function clearAll() {
+    items.length = 0; // clears the items array
+    localStorage.removeItem('items'); // removes the items from localStorage
+    populateList(items, itemsList); // re-populates the list with an empty array  
+  }
+
+  function selectAll() {
+    itemsList.querySelectorAll('input[type=checkbox]').forEach(checkbox => checkbox.checked = true);
+  }
+
+  function unselectAll() {
+    itemsList.querySelectorAll('input[type=checkbox]').forEach(checkbox => checkbox.checked = false);
+  }
+
+addItems.addEventListener('submit', addItem); // submit is an event that occurs when a form submitted or when you click submit button in HTML
+itemsList.addEventListener('click', toggleDone);
+
+populateList(items, itemsList); // populates the list with the items from localStorage
 
 </script>
-
 
 </body>
 </html>
