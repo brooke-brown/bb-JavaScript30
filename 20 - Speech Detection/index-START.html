@@ -10,9 +10,39 @@
   <div class="words" contenteditable>
   </div>
 
-<script>
+<script> 
+// had to be run on a server, not just a file
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+
+  let p = document.createElement('p');
+  const words = document.querySelector('.words');
+  words.appendChild(p);
+
+  recognition.addEventListener('result', e => {
+    const transcript = Array.from(e.results);
+    .map(result => result[0])
+    .map(result => result.transcript)
+    .join('');
+
+    p.textContent = transcript;
+    if (e.results[0].isFinal) { // otherwise, paragraph will overwrite itself every time new word is said
+      p = document.createElement('p');
+      words.appendChild(p);
+    }
+  
+    if(transcript.includes('hello')) { // detects 'hello' in the speech
+      console.log('Hello detected!');
+    }
+    console.log(transcript);
+  });
+
+  recognition.addEventListener('end', recognition.start);
+
+  recognition.start();
 
 </script>
 
