@@ -28,6 +28,37 @@
 
   <script>
     // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+
+    // DOM = the Document Object Model; a tree-like structure that represents the objects that comprise the
+    // structure and content of a document ont he web.
+
+    const triggers = document.querySelectorAll('a');
+    const highlight = document.createElement('span'); // span is an inline element that can be used to style a part of the text
+    highlight.classList.add('highlight');
+    document.body.append(highlight);
+
+    function highlightLink() {
+      const linkCoords = this.getBoundingClientRect(); // returns the size of an element and its position relative to the viewport
+      console.log(linkCoords);
+      const coords = {
+        width: linkCoords.width, // width of the link
+        height: linkCoords.height, // height of the link
+        top: linkCoords.top + window.scrollY, // top position of the link relative to the document
+        left: linkCoords.left + window.scrollX // left position of the link relative to the document
+      }
+
+      highlight.style.width = `${coords.width}px`; // width is the width of the link
+      highlight.style.height = `${coords.height}px`; // height is the height of the link
+      highlight.style.transform = `translate(${coords.left}px, ${coords.top}px)`; // translate the highlight to the position of the link
+      
+    } 
+
+    triggers.forEach(a => a.addEventListener('mouseenter', highlightLink));
+
+    // now need to figure out the position of the link that is being hovered over
+
+
+
   </script>
 </body>
 </html>
