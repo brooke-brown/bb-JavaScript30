@@ -64,7 +64,7 @@
     e.preventDefault();
     const x = e.pageX - slider.offsetLeft;
     const walk = (x - startX) * 3;
-    slider.scrollLeft = scrollLeft - walk;
+    slider.scrollLeft = scrollLeft - walk; // scrollLeft is the current scroll position
   });
   
 </script>

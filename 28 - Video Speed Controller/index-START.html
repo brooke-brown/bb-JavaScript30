@@ -16,6 +16,24 @@
   </div>
 
 <script>
+  const speed = document.querySelector('.speed'); // speed is the class of the container for the speed control
+  const bar = document.querySelector('.speed-bar'); // speed-bar is the class of the speed display element
+  const video = document.querySelector('.flex'); // flex is the class of the video element
+
+  function handleMove(e) {
+    const y = e.pageY - this.offsetTop;
+    const percent = y / this.offsetHeight;
+    const min = 0.4;
+    const max = 4;
+    const height = Math.round(percent * 100) + '%';
+    const playbackRate = percent * (max - min) + min;
+    bar.style.height = height;
+    bar.textContent = playbackRate.toFixed(2) + 'x';
+    video.playbackRate = playbackRate; //playbackrate is the speed at which the video plays
+  
+  }
+  speed.addEventListener('click', handleMove);
+
 </script>
 </body>
 </html>
