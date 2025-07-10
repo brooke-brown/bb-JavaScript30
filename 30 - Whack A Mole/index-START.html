@@ -34,9 +34,61 @@
   </div>
 
 <script>
-  const holes = document.querySelectorAll('.hole');
+  // VARIABLES
+  const holes = document.querySelectorAll('.hole'); // selected all holes
   const scoreBoard = document.querySelector('.score');
   const moles = document.querySelectorAll('.mole');
+  let lastHole;
+  let timeUp = false;
+  let score = 0;
+
+  // RANDOM TIME FUNCTION - this is called to get a random time for the mole to appear
+function randomTime(min, max) {
+  return Math.round(Math.random() * (max - min) + min);
+}
+
+// RANDOM HOLE FUNCTION - this is called to get a random hole for the mole to appear
+function randomHole(holes) {
+  const idx = Math.floor(Math.random() * holes.length); // get a random index
+  return holes[idx]; // return the hole at that index
+  if (hole === lastHole) {
+    console.log('same hole; trying again');
+    return randomHole(holes);
+  }
+  lastHole = hole;
+  return hole;
+}
+
+// PEEP FUNCTION - this is called to make a mole appear from hole
+function peep() {
+  const time = randomTime(200, 1000);
+  const hole = randomHole(holes);
+  hole.classList.add('up'); // makes the mole appear by adding 'up' class
+  setTimeout(() => {
+  hole.classList.remove('up'); // makes mole disappear after timeout
+  if (!timeUp) peep();
+ }, time);
+}
+
+// START GAME FUNCTION - this is called when the game starts; resets all game variables
+function startGame() {
+  scoreBoard.textContent = 0;
+  timeUp = false;
+  peep();
+  setTimeout(() => timeUp = true, 10000); // game lasts for 10 seconds
+
+}
+
+// BONK FUNCTION - this is called when a mole is successfully hit
+function bonk(e) {
+  if (!e.isTrusted) return; // cheating! isTrusted checks if the event is from a user action
+  score++; // increment score because hit successful
+    this.parentNode.classList.remove('up'); // remove mole because it was hit
+    scoreBoard.textContent = score; // update score on the scoreboard
+}
+
+// EVENT LISTENER - attaches bonk function to each mole
+moles.forEach(mole => mole.addEventListener('click', bonk));
 
 </script>
 </body>

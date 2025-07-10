@@ -5,6 +5,8 @@ const endTime = document.querySelector('.display__end-time');
 const buttons = document.querySelectorAll('[data-time]');
 
 // FUNCTIONS
+
+// TIMER
 function timer(seconds) {
     clearInterval(countdown); // clear any existing timer to avoid multiple intervals running
     // set Interval has issues in that it does not run exactly on time; same issue in iOS
@@ -22,6 +24,7 @@ function timer(seconds) {
     }, 1000);
 }
 
+//DISPLAY TIME LEFT
 function displayTimeLeft(seconds) {
     console.log(seconds);
     const minutes = Math.floor(seconds / 60); // Math.foor rounds down to the nearest integer
@@ -31,6 +34,7 @@ function displayTimeLeft(seconds) {
     document.title = display; // also update the title of the page
 }
 
+// DISPLAY END TIME
 function displayEndTime(timestamp) {
     const end = new Date(timestamp);
     const hour = end.getHours();
@@ -40,7 +44,6 @@ function displayEndTime(timestamp) {
     const display = `${adjustedHour}:${adjustedMinutes}`;
     document.querySelector('.display__end-time').textContent = `Be back at ${display}`;
 }
-
 
 buttons.forEach(button => {
     button.addEventListener('click', () => {
@@ -58,4 +61,3 @@ document.customForm.addEventListener('submit', function (e) {
     displayEndTime(Date.now() + mins * 60 * 1000); // display end time based on current time + minutes in milliseconds
     this.reset(); // reset the form
 })
-
